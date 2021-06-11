@@ -37,7 +37,13 @@ ORDER BY COUNT(`id`) DESC;
 5. Quante prenotazioni ha fatto l’ospite che ha fatto più
 prenotazioni? (quante, non chi!)
 */
+/*
 SELECT *, COUNT(`id`)
 FROM `pagamenti`
 GROUP BY `pagante_id`
+ORDER BY COUNT(`id`) DESC;
+*/
+SELECT `ospite_id`, COUNT(`id`)
+FROM `prenotazioni_has_ospiti`
+GROUP BY `ospite_id`
 ORDER BY COUNT(`id`) DESC;

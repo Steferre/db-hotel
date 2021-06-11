@@ -1,6 +1,7 @@
 /*
 1. Come si chiamano gli ospiti che hanno fatto più di due prenotazioni?
 */
+/*
 SELECT `paganti`.`name`,
         `paganti`.`lastname`,
         `pagamenti`.`pagante_id`,
@@ -11,12 +12,22 @@ ON `paganti`.`id` = `pagamenti`.`pagante_id`
 GROUP BY `pagamenti`.`pagante_id`
 HAVING COUNT(`paganti`.`id`) > 2
 ORDER BY COUNT(`paganti`.`id`) DESC;
+*/
+
+SELECT `ospiti`.`name`,
+        `ospiti`.`lastname`,
+        COUNT(`prenotazioni_has_ospiti`.`prenotazione_id`) AS `num_reserv_done`
+FROM `prenotazioni_has_ospiti`
+LEFT JOIN `ospiti` 
+ON `prenotazioni_has_ospiti`.`ospite_id` = `ospiti`.`id`
+GROUP BY `ospiti`.`id`
+HAVING `num_reserv_done` > 2
 
 /*
 2. Stampare tutti gli ospiti per ogni prenotazione
 */
 SELECT `ospiti`.`name`,
-		`ospiti`.`lastname`
+	`ospiti`.`lastname`
 FROM `ospiti`
 INNER JOIN `prenotazioni_has_ospiti`
 ON `ospiti`.`id` = `prenotazioni_has_ospiti`.`ospite_id`;
@@ -26,13 +37,14 @@ ON `ospiti`.`id` = `prenotazioni_has_ospiti`.`ospite_id`;
 prenotazioni fatte a Maggio 2018
 */
 SELECT `paganti`.`name`,
-		`paganti`.`lastname`,
+	`paganti`.`lastname`,
         `pagamenti`.`price`,
         `pagamenti`.`created_at`
 FROM `paganti`
 INNER JOIN `pagamenti` 
 ON `paganti`.`id` = `pagamenti`.`pagante_id`
 WHERE YEAR(`pagamenti`.`created_at`) = "2018-05";
+
 
 /*
 4. Fai la somma di tutti i prezzi delle prenotazioni per le stanze del
@@ -50,7 +62,7 @@ WHERE `floor` = 1;
 5. Prendi i dati di fatturazione per la prenotazione con id=7
 */
 SELECT `pagamenti`.`status`,
-		`pagamenti`.`price`,
+	`pagamenti`.`price`,
         `paganti`.`name`,
         `paganti`.`lastname`,
         `paganti`.`address`,
@@ -70,7 +82,7 @@ WHERE `pagamenti`.`prenotazione_id` = 7;
 (Visualizzare le stanze non ancora prenotate)
 */
 SELECT `stanze`.`id`,
-		`stanze`.`room_number`,
+	`stanze`.`room_number`,
         `stanze`.`floor`,
         `stanze`.`beds`,
         `prenotazioni`.`stanza_id`
